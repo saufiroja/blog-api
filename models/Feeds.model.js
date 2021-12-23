@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("./sequelize");
 
-class Users extends Model {}
+class Feeds extends Model {}
 
-Users.init(
+Feeds.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -11,27 +11,22 @@ Users.init(
       primaryKey: true,
       allowNull: false,
     },
-    username: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
+    body: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "Users",
-    tableName: "Users",
+    modelName: "Feeds",
+    tableName: "Feeds",
     timestamps: true,
     paranoid: true,
   }
 );
 
-module.exports = { Users };
+module.exports = { Feeds };

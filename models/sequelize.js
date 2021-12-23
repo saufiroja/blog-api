@@ -5,6 +5,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   port: parseInt(DB_PORT, 10),
   dialect: "postgres",
+  logging: true,
 });
 
 sequelize.authenticate().then(() => {

@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Users = require("../models/Users.Model");
+const { Users } = require("../models");
 
 const { SECRET } = process.env;
 let refreshTokens = [];
