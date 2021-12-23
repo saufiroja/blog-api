@@ -1,8 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const createError = require("http-errors");
-
 const Users = require("../models/Users.Model");
+
+const { SECRET } = process.env;
+let refreshTokens = [];
 
 // REGISTER
 exports.register = async (req, res, next) => {
@@ -43,22 +44,38 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const isValid = await Users.findOne({ where: { email } });
-    if (!isValid) {
+    const user = await Users.findOne({ where: { email } });
+    if (!user) {
       throw new Error("invalid email");
     }
 
-    const isMatch = await bcrypt.compare(password, isValid.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new Error("invalid password");
     }
 
+    const accessToken = genereteToken({ email });
+    const refreshToken = jwt.sign(email, SECRET);
+    refreshTokens.push(refreshToken);
+
     return res.status(200).json({
       message: "successfully login",
       code: 200,
-      user: isValid,
+      user,
+      accessToken,
+      refreshTokens,
     });
   } catch (error) {
     next(error);
   }
+};
+
+// GENERET TOKEN
+const genereteToken = (email) => {
+  return jwt.sign(email, SECRET, { expiresIn: 3600 });
+};
+
+// TEST
+exports.test = (req, res) => {
+  return res.send("hello");
 };
