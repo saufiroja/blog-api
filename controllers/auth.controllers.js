@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
 
 const { SECRET } = process.env;
-let refreshTokens = [];
 
 // REGISTER
 exports.register = async (req, res, next) => {
@@ -54,28 +53,30 @@ exports.login = async (req, res, next) => {
       throw new Error("invalid password");
     }
 
-    const accessToken = genereteToken({ email });
-    const refreshToken = jwt.sign(email, SECRET);
-    refreshTokens.push(refreshToken);
+    const payload = { id: user.id, username: user.username };
+    const accessToken = jwt.sign(payload, SECRET, { expiresIn: 3600 });
 
     return res.status(200).json({
       message: "successfully login",
       code: 200,
       user,
       accessToken,
-      refreshTokens,
     });
   } catch (error) {
     next(error);
   }
 };
 
-// GENERET TOKEN
-const genereteToken = (email) => {
-  return jwt.sign(email, SECRET, { expiresIn: 3600 });
-};
-
-// TEST
-exports.test = (req, res) => {
-  return res.send("hello");
+// GET USER
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await Users.findAll();
+    return res.status(200).json({
+      message: "get users",
+      code: 200,
+      users,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
