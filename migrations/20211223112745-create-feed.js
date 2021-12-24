@@ -6,10 +6,15 @@ module.exports = {
       "Feeds",
       {
         id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          allowNull: false,
+          primaryKey: true,
+        },
+        uuid: {
           type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
-          primaryKey: true,
         },
         title: {
           type: Sequelize.STRING,
@@ -18,6 +23,14 @@ module.exports = {
         body: {
           type: Sequelize.STRING,
           allowNull: false,
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "id",
+          },
         },
         createdAt: {
           type: Sequelize.DATE,
@@ -36,18 +49,6 @@ module.exports = {
         paranoid: true,
       }
     );
-
-    await queryInterface.addColumn("Feeds", "userId", {
-      type: Sequelize.UUID,
-      references: {
-        model: "Users",
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "SET NULL",
-    });
-
-    await Promise.all([queryInterface.addIndex("Feeds", ["userId"])]);
   },
 
   down: async (queryInterface, Sequelize) => {
