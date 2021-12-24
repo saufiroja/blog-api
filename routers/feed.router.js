@@ -6,11 +6,13 @@ const {
   findById,
   deleteFeed,
   updateFeed,
+  findAllFeedByUser,
 } = require("../controllers/feed.controllers");
 const { authenticationToken } = require("../middleware/jwt.verify");
 
 // GET
 router.get("/feed", authenticationToken, findAllFeed);
+router.get("/feedUser", authenticationToken, findAllFeedByUser);
 router.get("/feed/:id", authenticationToken, findById);
 
 // POST

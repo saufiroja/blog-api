@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { user } = require("pg/lib/defaults");
 const { Feeds, Users } = require("../models");
 
 // CREATE FEED
@@ -23,12 +24,34 @@ exports.createFeed = async (req, res, next) => {
   }
 };
 
-// FIND FEEDS
-exports.findAllFeed = async (req, res, next) => {
+// FIND FEEDS BY USER
+exports.findAllFeedByUser = async (req, res, next) => {
   try {
+    const token = req.headers.authorization.split(" ")[1];
+    const user = jwt.decode(token);
     const { limit = 2, offset = 0 } = req.query;
     const total = await Feeds.count();
-    const feeds = await Feeds.findAll({ limit, offset, include: Users });
+    const feeds = await Feeds.findAll(
+      { where: { userId: user.id } },
+      { limit, offset, include: Users }
+    );
+    return res.status(200).json({
+      message: "success find all feed",
+      code: 200,
+      feeds,
+      total,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// FIND ALL FEEDS
+exports.findAllFeed = async (req, res, next) => {
+  try {
+    // const { limit = 2, offset = 0 } = req.query;
+    const total = await Feeds.count();
+    const feeds = await Feeds.findAll({ include: { model: Users } });
     return res.status(200).json({
       message: "success find all feed",
       code: 200,
