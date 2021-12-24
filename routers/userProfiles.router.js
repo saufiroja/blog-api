@@ -1,8 +1,16 @@
 const router = require("express").Router();
 
-const { createProfile } = require("../controllers/userProfiles.controllers");
+const {
+  createProfile,
+  updateProfile,
+} = require("../controllers/userProfiles.controllers");
+const { authenticationToken } = require("../middleware/jwt.verify");
 // const { authenticationToken } = require("../middleware/jwt.verify");
 
-router.post("/profile", createProfile);
+// POST
+router.post("/profile", authenticationToken, createProfile);
+
+// PUT
+router.put("/profile/:id", authenticationToken, updateProfile);
 
 module.exports = router;
