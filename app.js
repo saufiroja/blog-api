@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const authRouter = require("./routers/auth.router");
+const feedRouter = require("./routers/feed.router");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(authRouter);
+app.use(feedRouter);
 
 // error handling
 app.use((err, req, res, next) => {
