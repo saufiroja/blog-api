@@ -6,7 +6,7 @@ exports.createFeed = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const user = jwt.decode(token);
-    const { title, body, userId } = req.body;
+    const { title, body } = req.body;
     const feed = await Feeds.create({
       title,
       body,
@@ -69,6 +69,7 @@ exports.deleteFeed = async (req, res, next) => {
   }
 };
 
+// UPDATE FEED
 exports.updateFeed = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
