@@ -11,8 +11,8 @@ const {
 const { authenticationToken } = require("../middleware/jwt.verify");
 
 // GET
-router.get("/feed", authenticationToken, findAllFeed);
-router.get("/feedUser", authenticationToken, findAllFeedByUser);
+router.get("/feeds", authenticationToken, findAllFeed);
+router.get("/feed", authenticationToken, findAllFeedByUser);
 router.get("/feed/:id", authenticationToken, findById);
 
 // POST
