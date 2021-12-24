@@ -5,10 +5,9 @@ class Feeds extends Model {}
 
 Feeds.init(
   {
-    id: {
+    uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
       allowNull: false,
     },
     title: {
