@@ -59,11 +59,10 @@ exports.findById = async (req, res, next) => {
 exports.deleteFeed = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deleteFeed = await Feeds.destroy(id);
+    await Feeds.destroy({ where: { id } });
     return res.status(200).json({
-      message: "delete feed by id",
+      message: "delete feed",
       code: 200,
-      feed: `Delete feed by id ${deleteFeed}`,
     });
   } catch (error) {
     next(error);
