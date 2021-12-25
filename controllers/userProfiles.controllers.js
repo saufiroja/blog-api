@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { UserProfiles } = require("../models/userProfiles.model");
+const { UserProfiles } = require("../models");
 
 // CREATE PROFILE
 exports.createProfile = async (req, res, next) => {

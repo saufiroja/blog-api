@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { user } = require("pg/lib/defaults");
 const { Feeds, Users } = require("../models");
 
 // CREATE FEED
